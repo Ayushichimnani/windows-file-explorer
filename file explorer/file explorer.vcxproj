@@ -142,10 +142,12 @@
     <ClInclude Include="file explorer.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="search_controls.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="file explorer.cpp" />
+    <ClCompile Include="search_controls.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="file explorer.rc" />

@@ -3,6 +3,7 @@
 
 #include "framework.h"
 #include "file explorer.h"
+#include "search_controls.h"
 
 #define MAX_LOADSTRING 100
 
@@ -106,6 +107,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    }
 
    ShowWindow(hWnd, nCmdShow);
+   CreateSearchControls(hWnd);
+   LoadFileList();
    UpdateWindow(hWnd);
 
    return TRUE;
@@ -131,6 +134,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             // Parse the menu selections:
             switch (wmId)
             {
+            case 2002:
+                SearchFiles();
+                break;
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                 break;
