@@ -1,7 +1,29 @@
 #include <windows.h>
 
-// Window procedure
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+#define ID_BACK       10
+#define ID_FORWARD    11
+#define ID_UP         12
+#define ID_REFRESH    13
+
+#define ID_ADDRESS    20
+#define ID_SEARCH     21
+
+#define ID_NEW        1
+#define ID_OPEN       2
+#define ID_EXIT       3
+
+#define ID_VIEW_REFRESH 4
+#define ID_LIST_VIEW    5
+#define ID_DETAILS_VIEW 6
+
+#define ID_FILE_AREA  30
+#define ID_STATUS     40
+
+
+// ================= WINDOW PROCEDURE =================
+
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg,
+                            WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg)
     {
@@ -9,10 +31,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         {
             int id = LOWORD(wParam);
 
-            // Back button
-            if (id == 10)
+            if (id == ID_BACK)
             {
-                MessageBox(
+                MessageBoxA(
                     hwnd,
                     "Back button clicked",
                     "RS File Explorer",
@@ -20,10 +41,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 );
             }
 
-            // Forward button
-            else if (id == 11)
+            else if (id == ID_FORWARD)
             {
-                MessageBox(
+                MessageBoxA(
                     hwnd,
                     "Forward button clicked",
                     "RS File Explorer",
@@ -31,10 +51,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 );
             }
 
-            // Up button
-            else if (id == 12)
+            else if (id == ID_UP)
             {
-                MessageBox(
+                MessageBoxA(
                     hwnd,
                     "Up button clicked",
                     "RS File Explorer",
@@ -42,10 +61,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 );
             }
 
-            // Refresh button
-            else if (id == 13)
+            else if (id == ID_REFRESH)
             {
-                MessageBox(
+                MessageBoxA(
                     hwnd,
                     "Refresh button clicked",
                     "RS File Explorer",
@@ -53,10 +71,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 );
             }
 
-            // Search button
-            else if (id == 21)
+            else if (id == ID_SEARCH)
             {
-                MessageBox(
+                MessageBoxA(
                     hwnd,
                     "Search button clicked",
                     "RS File Explorer",
@@ -64,10 +81,11 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 );
             }
 
-            // File -> New
-            else if (id == 1)
+            // ---------- FILE MENU ----------
+
+            else if (id == ID_NEW)
             {
-                MessageBox(
+                MessageBoxA(
                     hwnd,
                     "New option selected",
                     "RS File Explorer",
@@ -75,10 +93,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 );
             }
 
-            // File -> Open
-            else if (id == 2)
+            else if (id == ID_OPEN)
             {
-                MessageBox(
+                MessageBoxA(
                     hwnd,
                     "Open option selected",
                     "RS File Explorer",
@@ -86,16 +103,16 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 );
             }
 
-            // File -> Exit
-            else if (id == 3)
+            else if (id == ID_EXIT)
             {
                 PostMessage(hwnd, WM_CLOSE, 0, 0);
             }
 
-            // View -> Refresh
-            else if (id == 4)
+            // ---------- VIEW MENU ----------
+
+            else if (id == ID_VIEW_REFRESH)
             {
-                MessageBox(
+                MessageBoxA(
                     hwnd,
                     "Refresh option selected",
                     "RS File Explorer",
@@ -103,10 +120,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 );
             }
 
-            // View -> List View
-            else if (id == 5)
+            else if (id == ID_LIST_VIEW)
             {
-                MessageBox(
+                MessageBoxA(
                     hwnd,
                     "List View selected",
                     "RS File Explorer",
@@ -114,10 +130,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 );
             }
 
-            // View -> Details View
-            else if (id == 6)
+            else if (id == ID_DETAILS_VIEW)
             {
-                MessageBox(
+                MessageBoxA(
                     hwnd,
                     "Details View selected",
                     "RS File Explorer",
@@ -138,31 +153,40 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 }
 
 
-// Main function
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
-                   LPSTR lpCmdLine, int nCmdShow)
+// ================= MAIN FUNCTION =================
+
+int WINAPI WinMain(
+    HINSTANCE hInstance,
+    HINSTANCE hPrevInstance,
+    LPSTR lpCmdLine,
+    int nCmdShow)
 {
-    // Window class name
     const char CLASS_NAME[] = "RSFileExplorer";
 
-    // Register window class
-    WNDCLASS wc = {};
+    // ---------- WINDOW CLASS ----------
+
+    WNDCLASSA wc = {};
+
     wc.lpfnWndProc = WindowProc;
     wc.hInstance = hInstance;
     wc.lpszClassName = CLASS_NAME;
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 
-    RegisterClass(&wc);
+    RegisterClassA(&wc);
 
-    // Create main window
-    HWND hwnd = CreateWindowEx(
+
+    // ---------- MAIN WINDOW ----------
+
+    HWND hwnd = CreateWindowExA(
         0,
         CLASS_NAME,
         "RS File Explorer",
         WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, CW_USEDEFAULT,
-        1000, 650,
+        CW_USEDEFAULT,
+        CW_USEDEFAULT,
+        1000,
+        650,
         NULL,
         NULL,
         hInstance,
@@ -172,30 +196,76 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     if (hwnd == NULL)
         return 0;
 
-    // ---------------- MENU BAR ----------------
+
+    // =================================================
+    // MENU BAR
+    // =================================================
 
     HMENU hMenuBar = CreateMenu();
 
     HMENU hFileMenu = CreatePopupMenu();
 
-    AppendMenu(hFileMenu, MF_STRING, 1, "New");
-    AppendMenu(hFileMenu, MF_STRING, 2, "Open");
-    AppendMenu(hFileMenu, MF_STRING, 3, "Exit");
+    AppendMenuA(
+        hFileMenu,
+        MF_STRING,
+        ID_NEW,
+        "New"
+    );
+
+    AppendMenuA(
+        hFileMenu,
+        MF_STRING,
+        ID_OPEN,
+        "Open"
+    );
+
+    AppendMenuA(
+        hFileMenu,
+        MF_SEPARATOR,
+        0,
+        NULL
+    );
+
+    AppendMenuA(
+        hFileMenu,
+        MF_STRING,
+        ID_EXIT,
+        "Exit"
+    );
+
 
     HMENU hViewMenu = CreatePopupMenu();
 
-    AppendMenu(hViewMenu, MF_STRING, 4, "Refresh");
-    AppendMenu(hViewMenu, MF_STRING, 5, "List View");
-    AppendMenu(hViewMenu, MF_STRING, 6, "Details View");
+    AppendMenuA(
+        hViewMenu,
+        MF_STRING,
+        ID_VIEW_REFRESH,
+        "Refresh"
+    );
 
-    AppendMenu(
+    AppendMenuA(
+        hViewMenu,
+        MF_STRING,
+        ID_LIST_VIEW,
+        "List View"
+    );
+
+    AppendMenuA(
+        hViewMenu,
+        MF_STRING,
+        ID_DETAILS_VIEW,
+        "Details View"
+    );
+
+
+    AppendMenuA(
         hMenuBar,
         MF_POPUP,
         (UINT_PTR)hFileMenu,
         "File"
     );
 
-    AppendMenu(
+    AppendMenuA(
         hMenuBar,
         MF_POPUP,
         (UINT_PTR)hViewMenu,
@@ -205,99 +275,103 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     SetMenu(hwnd, hMenuBar);
 
 
-    // ---------------- TOOLBAR BUTTONS ----------------
+    // =================================================
+    // TOOLBAR
+    // =================================================
 
-    // Back button
-    CreateWindow(
+    CreateWindowA(
         "BUTTON",
         "< Back",
         WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-        10, 35, 80, 32,
+        15, 35, 80, 32,
         hwnd,
-        (HMENU)10,
+        (HMENU)ID_BACK,
         hInstance,
         NULL
     );
 
-    // Forward button
-    CreateWindow(
+    CreateWindowA(
         "BUTTON",
         "Forward >",
         WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-        95, 35, 90, 32,
+        100, 35, 90, 32,
         hwnd,
-        (HMENU)11,
+        (HMENU)ID_FORWARD,
         hInstance,
         NULL
     );
 
-    // Up button
-    CreateWindow(
+    CreateWindowA(
         "BUTTON",
         "Up",
         WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-        190, 35, 60, 32,
+        195, 35, 60, 32,
         hwnd,
-        (HMENU)12,
+        (HMENU)ID_UP,
         hInstance,
         NULL
     );
 
-    // Refresh button
-    CreateWindow(
+    CreateWindowA(
         "BUTTON",
         "Refresh",
         WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-        255, 35, 80, 32,
+        260, 35, 80, 32,
         hwnd,
-        (HMENU)13,
+        (HMENU)ID_REFRESH,
         hInstance,
         NULL
     );
 
 
-    // ---------------- ADDRESS BAR ----------------
+    // =================================================
+    // ADDRESS BAR
+    // =================================================
 
-    CreateWindow(
+    CreateWindowA(
         "STATIC",
         "Address:",
         WS_VISIBLE | WS_CHILD,
-        350, 43, 55, 20,
+        355, 43, 55, 20,
         hwnd,
         NULL,
         hInstance,
         NULL
     );
 
-    CreateWindow(
+    CreateWindowA(
         "EDIT",
         "C:\\Users",
         WS_VISIBLE | WS_CHILD | WS_BORDER | ES_LEFT,
-        410, 38, 450, 27,
+        415, 38, 440, 27,
         hwnd,
-        (HMENU)20,
+        (HMENU)ID_ADDRESS,
         hInstance,
         NULL
     );
 
 
-    // ---------------- SEARCH BUTTON ----------------
+    // =================================================
+    // SEARCH BUTTON
+    // =================================================
 
-    CreateWindow(
+    CreateWindowA(
         "BUTTON",
         "Search",
         WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-        870, 35, 80, 32,
+        865, 35, 80, 32,
         hwnd,
-        (HMENU)21,
+        (HMENU)ID_SEARCH,
         hInstance,
         NULL
     );
 
 
-    // ---------------- MAIN FILE DISPLAY AREA ----------------
+    // =================================================
+    // FILE DISPLAY AREA
+    // =================================================
 
-    CreateWindow(
+    CreateWindowA(
         "STATIC",
         "Files and Folders",
         WS_VISIBLE | WS_CHILD | SS_LEFT,
@@ -309,48 +383,58 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     );
 
 
-    // List box for files/folders
-    CreateWindow(
+    CreateWindowA(
         "LISTBOX",
         NULL,
-        WS_VISIBLE | WS_CHILD | WS_BORDER |
-        LBS_NOTIFY | WS_VSCROLL,
-        20, 115, 930, 430,
+        WS_VISIBLE |
+        WS_CHILD |
+        WS_BORDER |
+        LBS_NOTIFY |
+        WS_VSCROLL,
+        20, 115, 925, 430,
         hwnd,
-        (HMENU)30,
+        (HMENU)ID_FILE_AREA,
         hInstance,
         NULL
     );
 
 
-    // ---------------- STATUS BAR ----------------
+    // =================================================
+    // STATUS BAR
+    // =================================================
 
-    CreateWindow(
+    CreateWindowA(
         "STATIC",
         "Ready    |    0 items",
-        WS_VISIBLE | WS_CHILD | WS_BORDER | SS_LEFT,
-        20, 560, 930, 30,
+        WS_VISIBLE |
+        WS_CHILD |
+        WS_BORDER |
+        SS_LEFT,
+        20, 560, 925, 30,
         hwnd,
-        (HMENU)40,
+        (HMENU)ID_STATUS,
         hInstance,
         NULL
     );
 
 
-    // Show window
+    // ---------- SHOW WINDOW ----------
+
     ShowWindow(hwnd, nCmdShow);
     UpdateWindow(hwnd);
 
 
-    // ---------------- MESSAGE LOOP ----------------
+    // =================================================
+    // MESSAGE LOOP
+    // =================================================
 
     MSG msg = {};
 
-    while (GetMessage(&msg, NULL, 0, 0))
+    while (GetMessageA(&msg, NULL, 0, 0))
     {
         TranslateMessage(&msg);
-        DispatchMessage(&msg);
+        DispatchMessageA(&msg);
     }
 
     return 0;
-} 
+}
